@@ -27,7 +27,10 @@ Desenvolver uma aplicação frontend para gerenciar um sistema de tarefas e proj
 
 ## 💻 Interfaces
 
-Embedar o Figma aqui
+[Figma](https://www.figma.com/file/WwQYzebH1YLG2qKjDSUZOJ/Desafio-Khipo---ReactJS?type=design&node-id=102%3A370&mode=design&t=R3SLr1iTO48eRO7I-1)
+
+![image](https://github.com/mb-data/desafio-reactjs/assets/47340995/15ba37f2-2724-4f57-bee9-7b2930ab7bfe)
+
 
 ## 🥇 Diferenciais:
 
