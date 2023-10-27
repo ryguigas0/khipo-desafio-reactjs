@@ -25,6 +25,10 @@ Desenvolver uma aplicação frontend para gerenciar um sistema de tarefas e proj
 4. Estilos: Utilize uma biblioteca de design system (ex: Material-UI, Ant Design, Chakra UI) ou CSS puro. É importante que a aplicação seja responsiva.
 5. Formulários: Valide os formulários antes de enviar os dados para o backend.
 
+## 💻 Interfaces
+
+Embedar o Figma aqui
+
 ## 🥇 Diferenciais:
 
 1. Testes unitários utilizando, por exemplo, Jest e React Testing Library.
