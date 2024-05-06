@@ -1,70 +1,57 @@
-# Getting Started with Create React App
+<p align="center">
+  <img title="a title" alt="Alt text" src="https://media.licdn.com/dms/image/D4E16AQGjCVuzlCthvg/profile-displaybackgroundimage-shrink_200_800/0/1690574706700?e=2147483647&v=beta&t=zlY1Mc10yQ3gA9qiZ4sZ7m8PkE-HIu8Haa1fUyKb_fU">
+</p>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Desafio Frontend | ReactJS
 
-## Available Scripts
+Olá, candidato! Estamos felizes em tê-lo aqui. Este desafio foi criado para avaliar suas habilidades como desenvolvedor frontend.
 
-In the project directory, you can run:
+## 🚀 Objetivo:
 
-### `npm start`
+Desenvolver uma aplicação frontend para gerenciar um sistema de tarefas e projetos, permitindo que usuários criem projetos e associem tarefas a eles.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 📖 Regras de Negócio:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+1. Somente o criador do projeto pode adicionar ou remover membros.
+2. Tarefas só podem ser criadas por membros do projeto ao qual a tarefa pertence.
+3. Um usuário só pode ser adicionado a um projeto se ele já estiver registrado na plataforma.
+4. Tarefas concluídas não podem ser editadas.
 
-### `npm test`
+## 📜 Requisitos:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. Tecnologia: Utilize ReactJS ou NextJS para desenvolver a aplicação.
+2. Estado: Gerencie o estado da aplicação da maneira que desejar (Redux, Context API, MobX ...)
+3. Rotas: Implemente a navegação entre as páginas utilizando react-router ou a navegação nativa do NextJS .
+4. Estilos: Utilize uma biblioteca de design system (ex: Material-UI, Ant Design, Chakra UI) ou CSS puro. É importante que a aplicação seja responsiva.
+5. Formulários: Valide os formulários antes de enviar os dados para o backend.
 
-### `npm run build`
+## 💻 Interfaces
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+[Figma](https://www.figma.com/file/WwQYzebH1YLG2qKjDSUZOJ/Desafio-Khipo---ReactJS?type=design&node-id=102%3A370&mode=design&t=R3SLr1iTO48eRO7I-1)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+![image](https://github.com/mb-data/desafio-reactjs/assets/47340995/15ba37f2-2724-4f57-bee9-7b2930ab7bfe)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+## 🥇 Diferenciais:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. Testes unitários utilizando, por exemplo, Jest e React Testing Library.
+2. Animações de transição entre páginas ou para interações específicas.
+3. Uso de um linter (como ESLint) e formatador de código (como Prettier).
+4. Implementação de funcionalidades adicionais como busca, filtros e ordenação.
+5. Deploy da aplicação (pode usar Vercel, Netlify, etc.)
+    
+## 🗳️ Instruções de Submissão:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. Faça um fork deste repositório para sua conta pessoal do GitHub.
+2. Commit e push suas mudanças para o seu fork.
+3. Envie um e-mail para [arthur.olga@khipo.com.br] com o link do repositório.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 🧪 Avaliação:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- Estrutura do código e organização.
+- Uso das tecnologias propostas.
+- Implementação dos requisitos.
+- Tratamento de erros.
+- Funcionalidades extras (diferenciais).
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Desejamos a você boa sorte! Estamos ansiosos para ver o que irá construir.
