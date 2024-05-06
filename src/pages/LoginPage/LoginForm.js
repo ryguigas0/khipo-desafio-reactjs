@@ -3,7 +3,7 @@ import { InputGroup, FloatingLabel, Form, Modal } from "react-bootstrap"
 import * as formik from 'formik'
 import * as yup from 'yup'
 import LoginFormFooter from "./LoginFormFooter"
-import Feedback from "react-bootstrap/esm/Feedback"
+import * as userAPI from "../../api/users"
 
 export default function LoginForm({ createUser, changePassword }) {
     const { Formik } = formik
@@ -35,18 +35,27 @@ export default function LoginForm({ createUser, changePassword }) {
 
     const schema = yup.object(shape)
 
-    const validateSchema = (values) => {
-        console.log({ values })
-
-        return []
+    const onSubmit = ({
+        email,
+        password,
+        newPassword,
+        oldPassword,
+        confirmPassword
+    }) => {
+        if (changePassword) {
+            userAPI.changePassword(email, oldPassword, newPassword)
+        } else if (createUser && password === confirmPassword) {
+            userAPI.createUser(email, password)
+        } else {
+            userAPI.loginUser(email, password)
+        }
     }
 
     return (
         <Formik
             validationSchema={schema}
-            onSubmit={console.log}
-            initialValues={initialValues}
-            validateOnChange={validateSchema}>
+            onSubmit={onSubmit}
+            initialValues={initialValues}>
             {
                 ({ handleSubmit, handleChange, values, touched, errors }) => <Form onSubmit={handleSubmit}>
                     <Modal.Body>
@@ -140,7 +149,7 @@ export default function LoginForm({ createUser, changePassword }) {
                                 <InputGroup className="mb-3">
                                     <FloatingLabel
                                         controlId="confirmPassword"
-                                        label="confirmPassword"
+                                        label="Confirm password"
                                         className="mb-3"
                                     >
                                         <Form.Control
