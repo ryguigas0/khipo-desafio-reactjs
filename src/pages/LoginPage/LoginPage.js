@@ -1,5 +1,5 @@
 
-import { Container, Row, Col, Button, InputGroup } from 'react-bootstrap'
+import { Container, Row, Col} from 'react-bootstrap'
 
 import './LoginPage.css'
 import LoginModal from './LoginModal'
