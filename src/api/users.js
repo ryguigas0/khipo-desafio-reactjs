@@ -1,10 +1,33 @@
+import axios from 'axios'
+
 const mockAPI = process.env.REACT_APP_MOCK_API
 
-export function createUser(email, password) {
-    console.log("CREATING USER")
+const axiosDefaultConfig = {
+    baseURL: process.env.REACT_APP_API_URL,
+    headers: {
+        "Access-Control-Allow-Origin": "*"
+    }
+}
+
+
+export async function createUser(name, email, password) {
     console.log({
-        mockAPI, email, password
+        name, email, password
     })
+
+    try {
+        const resp = await axios.post("/users/", {
+            name: name,
+            email: email,
+            password: password,
+        }, axiosDefaultConfig)    
+
+        
+        return resp.data
+    } catch (error) {
+        console.log(error)
+        return error.response.data
+    }
 }
 
 export function changePassword(email, oldPassword, newPassword) {

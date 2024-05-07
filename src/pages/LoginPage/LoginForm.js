@@ -1,4 +1,6 @@
-import { InputGroup, FloatingLabel, Form, Modal } from "react-bootstrap"
+import { InputGroup, FloatingLabel, Form, Modal, Alert } from "react-bootstrap"
+
+import { useNavigate } from "react-router-dom";
 
 import * as formik from 'formik'
 import * as yup from 'yup'
@@ -7,6 +9,7 @@ import * as userAPI from "../../api/users"
 
 export default function LoginForm({ createUser, changePassword }) {
     const { Formik } = formik
+    const navigate = useNavigate()
 
     let shape = {
         email: yup.string().matches(/^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/).required(),
@@ -19,9 +22,11 @@ export default function LoginForm({ createUser, changePassword }) {
     if (createUser) {
         shape.password = yup.string().min(8).required()
         shape.confirmPassword = yup.string().min(8).required()
+        shape.name = yup.string().min(1).required()
 
         initialValues.password = ''
         initialValues.confirmPassword = ''
+        initialValues.name = ''
     } else if (changePassword) {
         shape.newPassword = yup.string().min(8).required()
         shape.oldPassword = yup.string().min(8).required()
@@ -35,17 +40,32 @@ export default function LoginForm({ createUser, changePassword }) {
 
     const schema = yup.object(shape)
 
-    const onSubmit = ({
+    const onSubmit = async ({
         email,
+        name,
         password,
         newPassword,
         oldPassword,
         confirmPassword
-    }) => {
+    }, { setStatus }) => {
         if (changePassword) {
+            if (confirmPassword !== newPassword) throw new Error("New password is different")
+
             userAPI.changePassword(email, oldPassword, newPassword)
-        } else if (createUser && password === confirmPassword) {
-            userAPI.createUser(email, password)
+        } else if (createUser) {
+            if (confirmPassword !== password) return setStatus({
+                message: "Confirm password doesnt match password",
+                variant: "danger"
+            })
+
+            const resp = await userAPI.createUser(name, email, password)
+            
+            if(resp.error) return setStatus({
+                message: resp.error,
+                variant: "danger"
+            })
+
+            navigate("/login")
         } else {
             userAPI.loginUser(email, password)
         }
@@ -57,8 +77,10 @@ export default function LoginForm({ createUser, changePassword }) {
             onSubmit={onSubmit}
             initialValues={initialValues}>
             {
-                ({ handleSubmit, handleChange, values, touched, errors }) => <Form onSubmit={handleSubmit}>
+                ({ handleSubmit, handleChange, values, touched, errors, status }) => {                    
+                    return <Form onSubmit={handleSubmit}>
                     <Modal.Body>
+                    {status && <Alert variant={status.variant}> {status.message} </Alert>}
                         <InputGroup className="pb-3" hasValidation>
                             <FloatingLabel
                                 controlId="email"
@@ -74,11 +96,32 @@ export default function LoginForm({ createUser, changePassword }) {
                                     isValid={touched.email && !errors.email}
                                 />
                                 {errors.email && <div>
-                                    Email inválido!
+                                    Invalid Email
                                 </div>}
                             </FloatingLabel>
-
                         </InputGroup>
+                        {
+                            createUser ?
+                                <InputGroup className="pb-3" hasValidation>
+                                    <FloatingLabel
+                                        controlId="name"
+                                        label="Name"
+                                        className="mb-3"
+                                    >
+                                        <Form.Control
+                                            placeholder="User's name"
+                                            aria-label="User's name"
+                                            aria-describedby="basic-addon2"
+                                            value={values.name}
+                                            onChange={handleChange}
+                                            isValid={touched.name && !errors.name}
+                                        />
+                                        {errors.name && <div>
+                                            Invalid username!
+                                        </div>}
+                                    </FloatingLabel>
+                                </InputGroup> : null
+                        }
                         {
                             changePassword ?
                                 <>
@@ -98,7 +141,7 @@ export default function LoginForm({ createUser, changePassword }) {
                                                 isValid={touched.oldPassword && !errors.oldPassword}
                                             />
                                             {errors.oldPassword && <div>
-                                                Min. 8 caracteres
+                                                Minimum 8 characters
                                             </div>}
                                         </FloatingLabel>
                                     </InputGroup>
@@ -118,7 +161,7 @@ export default function LoginForm({ createUser, changePassword }) {
                                                 isValid={touched.newPassword && !errors.newPassword}
                                             />
                                             {errors.newPassword && <div>
-                                                Min. 8 caracteres
+                                                Minimum 8 characters
                                             </div>}
                                         </FloatingLabel>
                                     </InputGroup>
@@ -162,7 +205,7 @@ export default function LoginForm({ createUser, changePassword }) {
                                             isValid={touched.confirmPassword && !errors.confirmPassword}
                                         />
                                         {errors.confirmPassword && <div>
-                                            Min. 8 caracteres
+                                            Minimum 8 characters
                                         </div>}
                                     </FloatingLabel>
                                 </InputGroup> : null
@@ -171,6 +214,8 @@ export default function LoginForm({ createUser, changePassword }) {
                     <LoginFormFooter
                         createUser={createUser}
                         changePassword={changePassword} />
-                </Form>}
+                </Form>
+                }
+            }
         </Formik>)
 }
