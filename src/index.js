@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 import {
   createBrowserRouter,
-  RouterProvider
+  RouterProvider,
+  Redirect
 } from 'react-router-dom'
 import LoginPage from './pages/LoginPage/LoginPage';
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -11,17 +12,22 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 const router = createBrowserRouter([
   {
-    path: "/login",
-    element: <LoginPage />
-  },
-  {
-    path: "/new-user",
-    element: <LoginPage createUser />
-  },
-  {
-    path: "/change-password",
-    element: <LoginPage changePassword />
-
+    path: "/",
+    // errorElement: <Redirect to="/login" />,
+    children: [
+      {
+        path: "",
+        element: <LoginPage />
+      },
+      {
+        path: "new-user",
+        element: <LoginPage createUser />
+      },
+      {
+        path: "change-password",
+        element: <LoginPage changePassword />
+      }
+    ]
   }
 ])
 

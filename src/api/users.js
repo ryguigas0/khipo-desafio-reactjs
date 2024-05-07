@@ -11,10 +11,6 @@ const axiosDefaultConfig = {
 
 
 export async function createUser(name, email, password) {
-    console.log({
-        name, email, password
-    })
-
     try {
         const resp = await axios.post("/users/", {
             name: name,
@@ -30,16 +26,23 @@ export async function createUser(name, email, password) {
     }
 }
 
-export function changePassword(email, oldPassword, newPassword) {
+export async function changePassword(email, oldPassword, newPassword) {
     console.log("CHANGING PASSWORD")
     console.log({
         mockAPI, email, oldPassword, newPassword
     })
 }
 
-export function loginUser(email, password) {
-    console.log("LOGGING IN")
-    console.log({
-        mockAPI, email, password
-    })
+export async function loginUser(email, password) {
+    try {
+        const resp = await axios.post("/auth/token/", {
+            email: email,
+            password: password
+        }, axiosDefaultConfig)    
+        
+        return resp.data
+    } catch (error) {
+        console.log(error)
+        return error.response.data
+    }
 }

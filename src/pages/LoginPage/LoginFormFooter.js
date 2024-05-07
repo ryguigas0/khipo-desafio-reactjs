@@ -5,14 +5,14 @@ export default function LoginFormFooter({ createUser, changePassword }) {
         return <Modal.Footer className='flex flex-column justify-content-center'>
             <Button variant="primary" type="submit">Create account</Button>
             <div className="flex flex-row justify-content-center modal-footer">
-                <Button variant="secondary" href='/login'>Back to login</Button>
+                <Button variant="secondary" href='/'>Back to login</Button>
             </div>
         </Modal.Footer>
     } else if (changePassword) {
         return <Modal.Footer className='flex flex-column justify-content-center'>
             <Button variant="primary" type="submit">Change password</Button>
             <div className="flex flex-row justify-content-center modal-footer">
-                <Button variant="secondary" href='/login'>Back to login</Button>
+                <Button variant="secondary" href='/'>Back to login</Button>
             </div>
         </Modal.Footer>
     } else {

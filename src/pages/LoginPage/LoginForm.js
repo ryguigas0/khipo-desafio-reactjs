@@ -65,9 +65,16 @@ export default function LoginForm({ createUser, changePassword }) {
                 variant: "danger"
             })
 
-            navigate("/login")
+            navigate("/")
         } else {
-            userAPI.loginUser(email, password)
+            const resp = await userAPI.loginUser(email, password)
+
+            if(resp.error) return setStatus({
+                message: resp.error,
+                variant: "danger"
+            })
+
+            console.log({resp})
         }
     }
 
