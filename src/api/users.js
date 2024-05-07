@@ -16,9 +16,9 @@ export async function createUser(name, email, password) {
             name: name,
             email: email,
             password: password,
-        }, axiosDefaultConfig)    
+        }, axiosDefaultConfig)
 
-        
+
         return resp.data
     } catch (error) {
         console.log(error)
@@ -27,10 +27,18 @@ export async function createUser(name, email, password) {
 }
 
 export async function changePassword(email, oldPassword, newPassword) {
-    console.log("CHANGING PASSWORD")
-    console.log({
-        mockAPI, email, oldPassword, newPassword
-    })
+    try {
+        const resp = await axios.put("/users/", {
+            email: email,
+            oldPassword: oldPassword,
+            newPassword: newPassword
+        }, axiosDefaultConfig)
+
+        return resp.data
+    } catch (error) {
+        console.log(error)
+        return error.response.data
+    }
 }
 
 export async function loginUser(email, password) {
@@ -38,8 +46,8 @@ export async function loginUser(email, password) {
         const resp = await axios.post("/auth/token/", {
             email: email,
             password: password
-        }, axiosDefaultConfig)    
-        
+        }, axiosDefaultConfig)
+
         return resp.data
     } catch (error) {
         console.log(error)

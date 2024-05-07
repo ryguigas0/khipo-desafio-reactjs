@@ -49,9 +49,22 @@ export default function LoginForm({ createUser, changePassword }) {
         confirmPassword
     }, { setStatus }) => {
         if (changePassword) {
-            if (confirmPassword !== newPassword) throw new Error("New password is different")
+            if (confirmPassword !== newPassword) return setStatus({
+                message: "Confirm password doesnt match new password",
+                variant: "danger"
+            })
 
-            userAPI.changePassword(email, oldPassword, newPassword)
+            const resp = await userAPI.changePassword(email, oldPassword, newPassword)
+
+            if (resp.error) return setStatus({
+                message: resp.error,
+                variant: "danger"
+            })
+
+            return setStatus({
+                message: "Password changed",
+                variant: "primary"
+            })
         } else if (createUser) {
             if (confirmPassword !== password) return setStatus({
                 message: "Confirm password doesnt match password",
@@ -59,8 +72,8 @@ export default function LoginForm({ createUser, changePassword }) {
             })
 
             const resp = await userAPI.createUser(name, email, password)
-            
-            if(resp.error) return setStatus({
+
+            if (resp.error) return setStatus({
                 message: resp.error,
                 variant: "danger"
             })
@@ -69,12 +82,12 @@ export default function LoginForm({ createUser, changePassword }) {
         } else {
             const resp = await userAPI.loginUser(email, password)
 
-            if(resp.error) return setStatus({
+            if (resp.error) return setStatus({
                 message: resp.error,
                 variant: "danger"
             })
 
-            console.log({resp})
+            console.log({ resp })
         }
     }
 
@@ -84,144 +97,146 @@ export default function LoginForm({ createUser, changePassword }) {
             onSubmit={onSubmit}
             initialValues={initialValues}>
             {
-                ({ handleSubmit, handleChange, values, touched, errors, status }) => {                    
-                    return <Form onSubmit={handleSubmit}>
-                    <Modal.Body>
-                    {status && <Alert variant={status.variant}> {status.message} </Alert>}
-                        <InputGroup className="pb-3" hasValidation>
-                            <FloatingLabel
-                                controlId="email"
-                                label="Email address"
-                                className="mb-3"
-                            >
-                                <Form.Control
-                                    placeholder="User's email"
-                                    aria-label="User's email"
-                                    aria-describedby="basic-addon2"
-                                    value={values.email}
-                                    onChange={handleChange}
-                                    isValid={touched.email && !errors.email}
-                                />
-                                {errors.email && <div>
-                                    Invalid Email
-                                </div>}
-                            </FloatingLabel>
-                        </InputGroup>
-                        {
-                            createUser ?
-                                <InputGroup className="pb-3" hasValidation>
-                                    <FloatingLabel
-                                        controlId="name"
-                                        label="Name"
-                                        className="mb-3"
-                                    >
-                                        <Form.Control
-                                            placeholder="User's name"
-                                            aria-label="User's name"
-                                            aria-describedby="basic-addon2"
-                                            value={values.name}
-                                            onChange={handleChange}
-                                            isValid={touched.name && !errors.name}
-                                        />
-                                        {errors.name && <div>
-                                            Invalid username!
-                                        </div>}
-                                    </FloatingLabel>
-                                </InputGroup> : null
-                        }
-                        {
-                            changePassword ?
-                                <>
-                                    <InputGroup className="mb-3">
+                ({ handleSubmit, handleChange, values, touched, errors, status }) => {
+                    return <Form
+                        noValidate
+                        onSubmit={handleSubmit}>
+                        <Modal.Body>
+                            {status && <Alert variant={status.variant}> {status.message} </Alert>}
+                            <InputGroup className="pb-3" hasValidation>
+                                <FloatingLabel
+                                    controlId="email"
+                                    label="Email address"
+                                    className="mb-3"
+                                >
+                                    <Form.Control
+                                        placeholder="User's email"
+                                        aria-label="User's email"
+                                        aria-describedby="basic-addon2"
+                                        value={values.email}
+                                        onChange={handleChange}
+                                        isValid={touched.email && !errors.email}
+                                    />
+                                    {errors.email && <div>
+                                        Invalid Email
+                                    </div>}
+                                </FloatingLabel>
+                            </InputGroup>
+                            {
+                                createUser ?
+                                    <InputGroup className="pb-3" hasValidation>
                                         <FloatingLabel
-                                            controlId="oldPassword"
-                                            label="Old password"
+                                            controlId="name"
+                                            label="Name"
                                             className="mb-3"
                                         >
                                             <Form.Control
-                                                placeholder="User's old password"
-                                                aria-label="User's old password"
+                                                placeholder="User's name"
+                                                aria-label="User's name"
                                                 aria-describedby="basic-addon2"
-                                                type='password'
-                                                value={values.oldPassword}
+                                                value={values.name}
                                                 onChange={handleChange}
-                                                isValid={touched.oldPassword && !errors.oldPassword}
+                                                isValid={touched.name && !errors.name}
                                             />
-                                            {errors.oldPassword && <div>
-                                                Minimum 8 characters
+                                            {errors.name && <div>
+                                                Invalid username!
                                             </div>}
                                         </FloatingLabel>
-                                    </InputGroup>
-                                    <InputGroup className="mb-3">
+                                    </InputGroup> : null
+                            }
+                            {
+                                changePassword ?
+                                    <>
+                                        <InputGroup className="mb-3">
+                                            <FloatingLabel
+                                                controlId="oldPassword"
+                                                label="Old password"
+                                                className="mb-3"
+                                            >
+                                                <Form.Control
+                                                    placeholder="User's old password"
+                                                    aria-label="User's old password"
+                                                    aria-describedby="basic-addon2"
+                                                    type='password'
+                                                    value={values.oldPassword}
+                                                    onChange={handleChange}
+                                                    isValid={touched.oldPassword && !errors.oldPassword}
+                                                />
+                                                {errors.oldPassword && <div>
+                                                    Minimum 8 characters
+                                                </div>}
+                                            </FloatingLabel>
+                                        </InputGroup>
+                                        <InputGroup className="mb-3">
+                                            <FloatingLabel
+                                                controlId="newPassword"
+                                                label="New password"
+                                                className="mb-3"
+                                            >
+                                                <Form.Control
+                                                    placeholder="User's new password"
+                                                    aria-label="User's new password"
+                                                    aria-describedby="basic-addon2"
+                                                    type='password'
+                                                    value={values.newPassword}
+                                                    onChange={handleChange}
+                                                    isValid={touched.newPassword && !errors.newPassword}
+                                                />
+                                                {errors.newPassword && <div>
+                                                    Minimum 8 characters
+                                                </div>}
+                                            </FloatingLabel>
+                                        </InputGroup>
+                                    </>
+                                    : <InputGroup className="mb-3">
                                         <FloatingLabel
-                                            controlId="newPassword"
-                                            label="New password"
+                                            controlId="password"
+                                            label="Password"
                                             className="mb-3"
                                         >
                                             <Form.Control
-                                                placeholder="User's new password"
-                                                aria-label="User's new password"
+                                                placeholder="User's password"
+                                                aria-label="User's password"
                                                 aria-describedby="basic-addon2"
                                                 type='password'
-                                                value={values.newPassword}
+                                                value={values.password}
                                                 onChange={handleChange}
-                                                isValid={touched.newPassword && !errors.newPassword}
+                                                isValid={touched.password && !errors.password}
                                             />
-                                            {errors.newPassword && <div>
-                                                Minimum 8 characters
+                                            {errors.password && <div>
+                                                Min. 8 caracteres
                                             </div>}
                                         </FloatingLabel>
                                     </InputGroup>
-                                </>
-                                : <InputGroup className="mb-3">
-                                    <FloatingLabel
-                                        controlId="password"
-                                        label="Password"
-                                        className="mb-3"
-                                    >
-                                        <Form.Control
-                                            placeholder="User's password"
-                                            aria-label="User's password"
-                                            aria-describedby="basic-addon2"
-                                            type='password'
-                                            value={values.password}
-                                            onChange={handleChange}
-                                            isValid={touched.password && !errors.password}
-                                        />
-                                        {errors.password && <div>
-                                            Min. 8 caracteres
-                                        </div>}
-                                    </FloatingLabel>
-                                </InputGroup>
-                        }
-                        {
-                            changePassword || createUser ?
-                                <InputGroup className="mb-3">
-                                    <FloatingLabel
-                                        controlId="confirmPassword"
-                                        label="Confirm password"
-                                        className="mb-3"
-                                    >
-                                        <Form.Control
-                                            placeholder="Confirm password"
-                                            aria-label="Confirm password"
-                                            aria-describedby="basic-addon2"
-                                            type='password'
-                                            value={values.confirmPassword}
-                                            onChange={handleChange}
-                                            isValid={touched.confirmPassword && !errors.confirmPassword}
-                                        />
-                                        {errors.confirmPassword && <div>
-                                            Minimum 8 characters
-                                        </div>}
-                                    </FloatingLabel>
-                                </InputGroup> : null
-                        }
-                    </Modal.Body>
-                    <LoginFormFooter
-                        createUser={createUser}
-                        changePassword={changePassword} />
-                </Form>
+                            }
+                            {
+                                changePassword || createUser ?
+                                    <InputGroup className="mb-3">
+                                        <FloatingLabel
+                                            controlId="confirmPassword"
+                                            label="Confirm password"
+                                            className="mb-3"
+                                        >
+                                            <Form.Control
+                                                placeholder="Confirm password"
+                                                aria-label="Confirm password"
+                                                aria-describedby="basic-addon2"
+                                                type='password'
+                                                value={values.confirmPassword}
+                                                onChange={handleChange}
+                                                isValid={touched.confirmPassword && !errors.confirmPassword}
+                                            />
+                                            {errors.confirmPassword && <div>
+                                                Minimum 8 characters
+                                            </div>}
+                                        </FloatingLabel>
+                                    </InputGroup> : null
+                            }
+                        </Modal.Body>
+                        <LoginFormFooter
+                            createUser={createUser}
+                            changePassword={changePassword} />
+                    </Form>
                 }
             }
         </Formik>)
