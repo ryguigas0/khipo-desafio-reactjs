@@ -91,11 +91,10 @@ export default function LoginForm({ createUser, changePassword }) {
             })
 
             const decoded = jwtDecode(resp.token)
-            console.log({decoded})
 
             setCookie('token', resp.token, {
                 path: "/",
-                // expires: new Date(decoded.exp + resp.duration)
+                expires: new Date((decoded.exp + resp.duration) * 1000)
             })
 
             navigate("/dashboard")
