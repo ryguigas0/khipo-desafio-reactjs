@@ -3,10 +3,10 @@ import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 import {
   createBrowserRouter,
-  RouterProvider,
-  Redirect
+  RouterProvider
 } from 'react-router-dom'
 import LoginPage from './pages/LoginPage/LoginPage';
+import ProjectDashboard from './pages/ProjectDashboard/ProjectDashboard';
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 
@@ -26,6 +26,10 @@ const router = createBrowserRouter([
       {
         path: "change-password",
         element: <LoginPage changePassword />
+      },
+      {
+        path: "dashboard",
+        element: <ProjectDashboard />
       }
     ]
   }

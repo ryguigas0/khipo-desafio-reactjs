@@ -6,10 +6,13 @@ import * as formik from 'formik'
 import * as yup from 'yup'
 import LoginFormFooter from "./LoginFormFooter"
 import * as userAPI from "../../api/users"
+import { jwtDecode } from "jwt-decode";
+import { useCookies } from "react-cookie";
 
 export default function LoginForm({ createUser, changePassword }) {
     const { Formik } = formik
     const navigate = useNavigate()
+    const [cookies, setCookie] = useCookies(['token'])
 
     let shape = {
         email: yup.string().matches(/^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/).required(),
@@ -87,7 +90,15 @@ export default function LoginForm({ createUser, changePassword }) {
                 variant: "danger"
             })
 
-            console.log({ resp })
+            const decoded = jwtDecode(resp.token)
+            console.log({decoded})
+
+            setCookie('token', resp.token, {
+                path: "/",
+                // expires: new Date(decoded.exp + resp.duration)
+            })
+
+            navigate("/dashboard")
         }
     }
 
