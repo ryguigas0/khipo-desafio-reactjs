@@ -1,6 +1,7 @@
 import { useContext, useState } from "react"
 import ProjectFormContext from "../../../contexts/ProjectFormContext"
 import ProjectListContext from "../../../contexts/ProjectListContext"
+import MemberListContext from "../../../contexts/MemberListContext"
 import SelectedProjectContext from "../../../contexts/SelectedProjectContext"
 import { Button, FloatingLabel, Form, FormLabel, InputGroup, Modal } from "react-bootstrap"
 import * as formik from 'formik'
@@ -13,6 +14,8 @@ export default function ProjectForm() {
     const [showProjectForm, setShowProjectForm, projectFormData, setProjectFormData] = useContext(ProjectFormContext)
     const [projectList, setProjectList] = useContext(ProjectListContext)
     const [selectedProject, setSelectedProject] = useContext(SelectedProjectContext)
+    const [memberList, setMemberList] = useContext(MemberListContext)
+
 
     const { Formik } = formik
 
@@ -62,6 +65,8 @@ export default function ProjectForm() {
         if (selectedProject.id === projectFormData.id) {
             setSelectedProject(newProjectList[0])
         }
+
+        setMemberList([])
 
         handleClose()
 

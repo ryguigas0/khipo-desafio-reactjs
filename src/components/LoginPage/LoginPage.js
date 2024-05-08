@@ -1,12 +1,16 @@
 
-import { Container, Row, Col} from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap'
 
-import './LoginPage.css'
 import LoginModal from './LoginModal'
 
 export default function LoginPage({ createUser, changePassword }) {
     return (
-        <div className='loginContainer'>
+        <div style={{
+            height: "100vh",
+            width: "100%",
+            display: "grid",
+            "place-items": "center"
+        }}>
             <Container className='p-4'>
                 <Row>
                     <Col>
@@ -19,6 +23,6 @@ export default function LoginPage({ createUser, changePassword }) {
                     </Col>
                 </Row>
             </Container>
-        </div>
+        </div >
     )
 }

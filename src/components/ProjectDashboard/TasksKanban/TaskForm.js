@@ -1,12 +1,14 @@
 import { useContext } from "react"
-import { Button, FloatingLabel, Form, FormLabel, InputGroup, Modal } from "react-bootstrap"
+import { Button, FloatingLabel, Form, FormGroup, FormLabel, InputGroup, Modal } from "react-bootstrap"
 import * as formik from 'formik'
 import * as yup from 'yup'
 import { useCookies } from "react-cookie"
 import TaskFormContext from "../../../contexts/TaskFormContext"
+import MemberListContext from "../../../contexts/MemberListContext"
 
 export default function TaskForm(props) {
     const [taskFormShow, setTaskFormShow, taskFormData, setTaskFormData] = useContext(TaskFormContext)
+    const [memberList, setMemberList] = useContext(MemberListContext)
 
     const { Formik } = formik
 
@@ -18,12 +20,14 @@ export default function TaskForm(props) {
         title: taskFormData ? taskFormData.name : "",
         description: taskFormData ? taskFormData.description : "",
         // tags: taskFormData ? taskFormData.tags : "",
-        // assignedMemberId
+        assignedMember: taskFormData ? taskFormData.assignedMemberId : -1,
+        tags: ""
     }
 
     let schema = {
-        name: yup.string().min(1).max(255),
-        description: yup.string().notRequired().min(1)
+        name: yup.string().min(1).max(255).required(),
+        description: yup.string().notRequired().min(1),
+        assignedMember: yup.number().min(-1).required()
     }
 
     let taskSchema = yup.object(schema)
@@ -45,9 +49,10 @@ export default function TaskForm(props) {
         </Modal.Header>
         <Formik
             validationSchema={taskSchema}
-            initialValues={initialValues}>
+            initialValues={initialValues}
+            onSubmit={handleSave}>
             {
-                ({ handleChange, values, touched, errors, status }) => <>
+                ({ handleChange, handleSubmit, values, touched, errors, status }) => <>
                     <Modal.Body>
                         <Form noValidate validated={false}>
                             <InputGroup className="pb-3">
@@ -90,13 +95,30 @@ export default function TaskForm(props) {
                                     Invalid task descirption
                                 </div>}
                             </InputGroup>
+                            <Form.Group className="pb-3">
+                                <FormLabel htmlFor="assignedMember">
+                                    Member assigned to task
+                                </FormLabel>
+                                <Form.Select id="assignedMember" aria-label="Select assigned member task">
+                                    <option selected value={-1}>None</option>
+                                    {
+                                        memberList.map(m =>
+                                            <option key={m.id} value={m.id}>
+                                                {m.name}
+                                            </option>
+                                        )
+                                    }
+                                </Form.Select>
+                            </Form.Group>
+                            <InputGroup>
+                            </InputGroup>
                         </Form>
                     </Modal.Body>
                     <Modal.Footer className="flex flex-row justify-content-center gap-5">
                         <Button variant="danger" onClick={handleClose}>
                             Cancel
                         </Button>
-                        <Button variant="primary" onClick={() => handleSave(values)}>
+                        <Button variant="primary" onClick={handleSubmit}>
                             Save
                         </Button>
                         {taskFormData && <Button variant="danger" onClick={handleDelete}>

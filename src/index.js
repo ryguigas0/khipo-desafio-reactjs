@@ -7,8 +7,7 @@ import {
 } from 'react-router-dom'
 import LoginPage from './components/LoginPage/LoginPage';
 import ProjectDashboard from './components/ProjectDashboard/ProjectDashboard';
-import 'bootstrap/dist/css/bootstrap.min.css'
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const router = createBrowserRouter([
   {

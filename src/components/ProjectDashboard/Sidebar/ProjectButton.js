@@ -4,6 +4,7 @@ import { ArrowRight, PencilSquare } from "react-bootstrap-icons";
 import SelectedProjectContext from "../../../contexts/SelectedProjectContext";
 import ProjectsSidebarContext from "../../../contexts/ProjectsSidebarContext";
 import ProjectFormContext from "../../../contexts/ProjectFormContext";
+import MemberListContext from "../../../contexts/MemberListContext";
 import { useCookies } from "react-cookie";
 import { jwtDecode } from "jwt-decode";
 
@@ -12,6 +13,7 @@ export default function ProjectButton({ project, editButton }) {
     const [showSidebar, setShowSidebar] = useContext(ProjectsSidebarContext)
     const [showProjectForm, setShowProjectForm, projectFormData, setProjectFormData] = useContext(ProjectFormContext)
     const [cookies, setCookies] = useCookies(['token'])
+    const [memberList, setMemberList] = useContext(MemberListContext)
 
     const { userId } = jwtDecode(cookies.token)
 
@@ -24,6 +26,7 @@ export default function ProjectButton({ project, editButton }) {
         } else {
             setSelectedProject(project)
             setShowSidebar(false)
+            setMemberList([project.owner].concat(project.members))
         }
     }
 
