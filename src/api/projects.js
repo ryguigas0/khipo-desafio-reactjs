@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+import axiosConfig from './axiosConfig'
+
 const mockAPI = process.env.REACT_APP_MOCK_API
 
 
@@ -49,12 +51,3 @@ export async function deleteProject(token, projectId) {
     }
 }
 
-function axiosConfig(token) {
-    return {
-        baseURL: process.env.REACT_APP_API_URL,
-        headers: {
-            "Access-Control-Allow-Origin": "*",
-            "authorization": `Bearer ${token}`
-        }
-    }
-}

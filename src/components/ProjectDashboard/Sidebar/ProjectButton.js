@@ -27,10 +27,12 @@ export default function ProjectButton({ project, editButton }) {
         }
     }
 
-    return <div className="d-flex flex-row justify-content-between align-items-center border border-dark border-width-1 rounded p-2 m-1">
-        <h3>{project.name}</h3>
-        <Button variant="primary" onClick={handleClick}>
-            {isEditing ? <PencilSquare fontSize={"200%"} /> : <ArrowRight fontSize={"200%"} />}
-        </Button>
-    </div>
+    let classList = "d-flex flex-row justify-content-between align-items-center border border-dark border-width-1 rounded p-2 m-1"
+
+    if(isEditing) classList += " bg-primary text-light"
+
+    return <Button className={classList} variant="none" onClick={handleClick}>
+        <div className='fs-4'>{project.name}</div>
+        {isEditing ? <PencilSquare fontSize={"200%"} /> : <ArrowRight fontSize={"200%"} />}
+    </Button>
 }
