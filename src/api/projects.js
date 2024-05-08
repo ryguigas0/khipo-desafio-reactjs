@@ -11,7 +11,32 @@ export async function getProjectList(token) {
     } catch (error) {
         return error.response
     }
+}
 
+export async function createProject(token, name, description) {
+    try {
+        const resp = await axios.post("/projects/", {
+            name: name,
+            description: description
+        }, axiosConfig(token))
+
+        return resp.data
+    } catch (error) {
+        return error.response
+    }
+}
+
+export async function updateProject(token, projectId, name, description) {
+    try {
+        const resp = await axios.put("/projects/" + projectId, {
+            name: name,
+            description: description
+        }, axiosConfig(token))
+
+        return resp.data
+    } catch (error) {
+        return error.response
+    }
 }
 
 function axiosConfig(token) {

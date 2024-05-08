@@ -22,9 +22,9 @@ export default function ProjectDashboard(props) {
     return <SelectedProjectContext.Provider value={[selectedProject, setSelectedProject]} >
         <ProjectsSidebarContext.Provider value={[showSidebar, setShowSidebar]}>
             <ProjectDashboardSidebar username={username} />
-            <Navbar className="bg-body-tertiary px-2">
+            <Navbar className="px-2">
                 <Button variant='primary' resposive="lg" onClick={() => setShowSidebar(true)}>
-                    <List className="" />
+                    <List fontSize={"200%"} />
                 </Button>
             </Navbar>
             <TasksKanban />
