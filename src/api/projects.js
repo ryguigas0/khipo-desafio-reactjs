@@ -41,7 +41,7 @@ export async function updateProject(token, projectId, name, description) {
 
 export async function deleteProject(token, projectId) {
     try {
-        const resp = await axios.put("/projects/" + projectId, axiosConfig(token))
+        const resp = await axios.delete("/projects/" + projectId, axiosConfig(token))
 
         return resp.data
     } catch (error) {
