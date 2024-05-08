@@ -39,6 +39,16 @@ export async function updateProject(token, projectId, name, description) {
     }
 }
 
+export async function deleteProject(token, projectId) {
+    try {
+        const resp = await axios.put("/projects/" + projectId, axiosConfig(token))
+
+        return resp.data
+    } catch (error) {
+        return error.response
+    }
+}
+
 function axiosConfig(token) {
     return {
         baseURL: process.env.REACT_APP_API_URL,

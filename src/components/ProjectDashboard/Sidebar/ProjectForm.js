@@ -1,6 +1,7 @@
 import { useContext, useState } from "react"
 import ProjectFormContext from "../../../contexts/ProjectFormContext"
 import ProjectListContext from "../../../contexts/ProjectListContext"
+import SelectedProjectContext from "../../../contexts/SelectedProjectContext"
 import { Button, FloatingLabel, Form, FormLabel, InputGroup, Modal } from "react-bootstrap"
 import * as formik from 'formik'
 import * as yup from 'yup'
@@ -11,6 +12,7 @@ export default function ProjectForm() {
     const [cookies, setCookie] = useCookies(['token'])
     const [showProjectForm, setShowProjectForm, projectFormData, setProjectFormData] = useContext(ProjectFormContext)
     const [projectList, setProjectList] = useContext(ProjectListContext)
+    const [selectedProject, setSelectedProject] = useContext(SelectedProjectContext)
 
     const { Formik } = formik
 
@@ -48,9 +50,21 @@ export default function ProjectForm() {
             handleClose()
         }
     }
-    const handleDelete = async (values) => {
-        console.log("delete")
-        console.log({ submit: values })
+    const handleDelete = async () => {
+        await projectAPI.deleteProject(cookies.token, projectFormData.id)
+
+        const newProjectList = projectList.filter(proj => {
+            return proj.id !== projectFormData.id
+        })
+
+        setProjectList(newProjectList)
+
+        if (selectedProject.id === projectFormData.id) {
+            setSelectedProject(newProjectList[0])
+        }
+
+        handleClose()
+
     }
 
     return <Modal show={showProjectForm} onHide={handleClose} centered>
