@@ -2,7 +2,7 @@
 import { Container, Row, Col} from 'react-bootstrap'
 
 import './LoginPage.css'
-import LoginModal from '../../components/LoginPage/LoginModal'
+import LoginModal from './LoginModal'
 
 export default function LoginPage({ createUser, changePassword }) {
     return (

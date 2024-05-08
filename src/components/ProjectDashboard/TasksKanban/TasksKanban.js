@@ -1,10 +1,15 @@
+import { useContext } from "react";
 import { Container, Row, Col } from "react-bootstrap";
+import SelectedProjectContext from "../../../contexts/SelectedProjectContext";
 
 export default function TasksKanban(props) {
+    const [selectedProject, setSelectedProject] = useContext(SelectedProjectContext)
+
     return <div className='loginContainer'>
         <Container className='p-4'>
             <Row>
                 <Col>
+                    {JSON.stringify(selectedProject)}
                     <div
                         className="modal show"
                         style={{ display: 'block', position: 'initial' }}

@@ -5,8 +5,8 @@ import {
   createBrowserRouter,
   RouterProvider
 } from 'react-router-dom'
-import LoginPage from './pages/LoginPage/LoginPage';
-import ProjectDashboard from './pages/ProjectDashboard/ProjectDashboard';
+import LoginPage from './components/LoginPage/LoginPage';
+import ProjectDashboard from './components/ProjectDashboard/ProjectDashboard';
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 

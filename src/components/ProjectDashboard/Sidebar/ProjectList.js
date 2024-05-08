@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import { Navbar } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
 import { getProjectList } from "../../../api/projects"
 import { useCookies } from "react-cookie";
@@ -10,8 +9,6 @@ export default function ProjectList(props) {
     const [cookies, setCookie] = useCookies(['token'])
     const [projectList, setProjectList] = useState([])
     const [Loading, setLoading] = useState(true)
-
-    console.log(projectList)
 
     const fetchData = async () => {
         let resp = await getProjectList(cookies.token)
@@ -33,7 +30,7 @@ export default function ProjectList(props) {
 
     return <div className="d-flex flex-column justify-content-start gap-2">
         {
-            projectList.map(p => <ProjectButton project={p} editButton/>)
+            projectList.map(p => <ProjectButton key={p.id} project={p} editButton/>)
         }
     </div>
 
