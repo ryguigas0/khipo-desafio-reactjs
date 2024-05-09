@@ -10,7 +10,6 @@ export default function TagListInput({ initialValue, setFieldValue }) {
     const appendTag = () => {
         if (addTagValue) {
             const newTagList = uniqueItemsList([].concat(tags, [addTagValue]))
-            console.log({ newTagList })
             setTags(newTagList)
             setFieldValue("tagsString", tagList2String(newTagList), false)
             setaddTagValue("")

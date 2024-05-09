@@ -7,6 +7,7 @@ import { useState } from "react";
 import ProjectsSidebarContext from "../../contexts/ProjectsSidebarContext";
 import SelectedProjectContext from "../../contexts/SelectedProjectContext";
 import MemberListContext from "../../contexts/MemberListContext";
+import TaskListContext from "../../contexts/TaskListContext";
 import { List } from "react-bootstrap-icons";
 import TaskDashboard from "./TasksKanban/TaskDashboard";
 
@@ -23,17 +24,21 @@ export default function ProjectDashboard(props) {
 
     const [memberList, setMemberList] = useState([])
 
-    return <MemberListContext.Provider value={[memberList, setMemberList]}>
-        <SelectedProjectContext.Provider value={[selectedProject, setSelectedProject]} >
-            <ProjectsSidebarContext.Provider value={[showSidebar, setShowSidebar]}>
-                <DashboardSidebar username={username} />
-                <Navbar className="px-2">
-                    <Button variant='none' resposive="lg" onClick={() => setShowSidebar(true)}>
-                        <List fontSize={"200%"} />
-                    </Button>
-                </Navbar>
-                <TaskDashboard />
-            </ProjectsSidebarContext.Provider>
-        </SelectedProjectContext.Provider>
-    </MemberListContext.Provider>
+    const [taskList, setTaskList] = useState([])
+
+    return <TaskListContext.Provider value={[taskList, setTaskList]}>
+        <MemberListContext.Provider value={[memberList, setMemberList]}>
+            <SelectedProjectContext.Provider value={[selectedProject, setSelectedProject]} >
+                <ProjectsSidebarContext.Provider value={[showSidebar, setShowSidebar]}>
+                    <DashboardSidebar username={username} />
+                    <Navbar className="px-2">
+                        <Button variant='none' resposive="lg" onClick={() => setShowSidebar(true)}>
+                            <List fontSize={"200%"} />
+                        </Button>
+                    </Navbar>
+                    <TaskDashboard />
+                </ProjectsSidebarContext.Provider>
+            </SelectedProjectContext.Provider>
+        </MemberListContext.Provider>
+    </TaskListContext.Provider>
 }

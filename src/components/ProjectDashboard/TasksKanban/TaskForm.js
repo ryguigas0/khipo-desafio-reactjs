@@ -6,10 +6,16 @@ import { useCookies } from "react-cookie"
 import TaskFormContext from "../../../contexts/TaskFormContext"
 import MemberListContext from "../../../contexts/MemberListContext"
 import TagListInput from "./TaskListInput/TagListInput"
+import * as taskAPI from "../../../api/tasks"
+import SelectedProjectContext from "../../../contexts/SelectedProjectContext"
+import TaskListContext from "../../../contexts/TaskListContext"
 
 export default function TaskForm(props) {
     const [taskFormShow, setTaskFormShow, taskFormData, setTaskFormData] = useContext(TaskFormContext)
     const [memberList, setMemberList] = useContext(MemberListContext)
+    const [selectedProject, setSelectedProject] = useContext(SelectedProjectContext)
+    const [taskList, setTaskList] = useContext(TaskListContext)
+    const [cookies, setCookies] = useCookies(['token'])
 
     const { Formik } = formik
 
@@ -33,12 +39,27 @@ export default function TaskForm(props) {
 
     let taskSchema = yup.object(schema)
 
-    const handleSave = (values) => {
-        console.log("SAVING TASK")
-        console.log(values)
+    const handleSave = async (values) => {
+        if (taskFormData) {
+            console.log("EDITING TASK")
+            console.log(values)
+        } else {
+            const resp = await taskAPI.createTask(
+                cookies.token,
+                selectedProject.id,
+                values.title,
+                values.description,
+                values.tagsString.split(', '),
+                values.assignedMember === -1 ? null : values.assignedMember
+            )
+
+            const newTaskList = [].concat(taskList, [resp])
+            setTaskList(newTaskList)
+        }
+        handleClose()
     }
 
-    const handleDelete = (values) => {
+    const handleDelete = async (values) => {
         console.log("DELETING TASK")
         console.log(values)
     }

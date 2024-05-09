@@ -51,3 +51,14 @@ export async function deleteProject(token, projectId) {
     }
 }
 
+
+export async function getProject(token, projectId) {
+    try {
+        const resp = await axios.get("/projects/" + projectId, axiosConfig(token))
+
+        return resp.data
+    } catch (error) {
+        return error.response
+    }
+}
+
