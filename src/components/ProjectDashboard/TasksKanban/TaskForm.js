@@ -5,7 +5,7 @@ import * as yup from 'yup'
 import { useCookies } from "react-cookie"
 import TaskFormContext from "../../../contexts/TaskFormContext"
 import MemberListContext from "../../../contexts/MemberListContext"
-import TagListInput from "./TagListInput"
+import TagListInput from "./TaskListInput/TagListInput"
 
 export default function TaskForm(props) {
     const [taskFormShow, setTaskFormShow, taskFormData, setTaskFormData] = useContext(TaskFormContext)
@@ -20,7 +20,6 @@ export default function TaskForm(props) {
     let initialValues = {
         title: taskFormData ? taskFormData.name : "",
         description: taskFormData ? taskFormData.description : "",
-        // tags: taskFormData ? taskFormData.tags : "",
         assignedMember: taskFormData ? taskFormData.assignedMemberId : -1,
         tagsString: ""
     }
@@ -112,7 +111,6 @@ export default function TaskForm(props) {
                                     }
                                 </Form.Select>
                             </Form.Group>
-
                             <TagListInput
                                 values={values}
                                 setFieldValue={setFieldValue} />

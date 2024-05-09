@@ -51,7 +51,7 @@ export default function DashboardSidebar({ username }) {
                 </Offcanvas.Header>
                 <Offcanvas.Body className='d-flex flex-column justify-content-between'>
                     <ProjectList />
-                    <div >
+                    <div>
                         <Button className="d-flex flex-row justify-content-between align-items-center border border-dark border-width-1 rounded p-2 m-1" variant="none" onClick={handleCreateProject}>
                             <div className='fs-4'>Create project</div>
                             <Plus fontSize={"200%"} />
