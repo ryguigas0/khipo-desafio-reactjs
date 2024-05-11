@@ -30,8 +30,17 @@ export async function createTask(token, projectId, title, description, tags, ass
     }
 
     try {
-        console.log({token, projectId, body})
         const resp = await axios.post("/projects/" + projectId + "/tasks/", body, axiosConfig(token))
+
+        return resp.data
+    } catch (error) {
+        return error.response
+    }
+}
+
+export async function getTask(token, projectId, taskId) {
+    try {
+        const resp = await axios.get("/projects/" + projectId + "/tasks/" + taskId, axiosConfig(token))
 
         return resp.data
     } catch (error) {

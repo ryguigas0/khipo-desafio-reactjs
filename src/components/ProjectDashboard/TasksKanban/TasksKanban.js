@@ -3,10 +3,13 @@ import { Container, Row, Col, Spinner, Button } from "react-bootstrap";
 import SelectedProjectContext from "../../../contexts/SelectedProjectContext";
 import TaskFormContext from "../../../contexts/TaskFormContext";
 import * as projectAPI from "../../../api/projects"
+import * as taskAPI from "../../../api/tasks"
 import { useCookies } from "react-cookie";
 import { Plus } from "react-bootstrap-icons";
 import TaskForm from "./TaskForm";
 import TaskListContext from "../../../contexts/TaskListContext";
+import TaskCard from "./TaskCard";
+import TaskColumn from "./TaskColumn";
 
 export default function TasksKanban(props) {
     const [loading, setLoading] = useState(true)
@@ -25,7 +28,6 @@ export default function TasksKanban(props) {
             setLoading(false)
         }
         fetchData()
-        return () => { }
     }, [selectedProject])
 
     const handleCreateTask = () => {
@@ -67,22 +69,22 @@ export default function TasksKanban(props) {
 
     return <TaskListContext.Provider value={[taskList, setTaskList]}>
         <TaskFormContext.Provider value={[showTaskForm, setTaskFormShow, taskFormData, setTaskFormData]}>
-            <div className='loginContainer'>
-                <Container className='p-4'>
-                    <Row>
-                        <Col>
-                            {JSON.stringify(selectedProject)}
-                            {JSON.stringify(taskList)}
-                            <div
-                                className="modal show"
-                                style={{ display: 'block', position: 'initial' }}
-                            >
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus malesuada diam ac ante egestas ullamcorper. Praesent egestas condimentum orci eget elementum. Maecenas ex turpis, ullamcorper a mollis vitae, auctor non massa. Pellentesque tincidunt elit non orci pulvinar, vel ultrices est malesuada. Duis justo tortor, gravida nec sollicitudin sed, blandit id tellus. Vestibulum vitae mollis lacus, tempor viverra tortor. Nunc turpis nisl, dignissim eu libero sit amet, dapibus hendrerit libero. Duis eleifend massa sapien, sit amet ullamcorper dui pharetra eu. Aliquam rutrum libero non nisi ultrices ultrices. Curabitur sit amet est eget est interdum fringilla.</p>
-                            </div>
-                        </Col>
-                    </Row>
-                </Container>
-            </div>
+            <Container style={{ width: "200%" }}>
+                <Row>
+                    <Col xs={4}>
+                        <h3>Pending</h3>
+                        <TaskColumn tasks={taskList} />
+                    </Col>
+                    <Col xs={{ span: 4 }}>
+                        <h3>Ongoing</h3>
+                        <TaskColumn tasks={taskList} />
+                    </Col>
+                    <Col xs={{ span: 4 }}>
+                        <h3>Done</h3>
+                        <TaskColumn tasks={taskList} />
+                    </Col>
+                </Row>
+            </Container>
         </TaskFormContext.Provider>
     </TaskListContext.Provider>
 }
