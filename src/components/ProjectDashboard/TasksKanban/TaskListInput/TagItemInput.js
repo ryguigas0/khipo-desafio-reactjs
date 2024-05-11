@@ -3,11 +3,18 @@ import { Button } from "react-bootstrap";
 import { TrashFill } from "react-bootstrap-icons";
 import TagInputContext from "../../../../contexts/TagInputContext"
 
-export default function TagItemInput({ tagValue }) {
-    const [tags, setTags] = useContext(TagInputContext)
+export default function TagItemInput({ tagValue, tagId, setFieldValue }) {
+    const [tags, setTags, removedTags, setRemovedTags] = useContext(TagInputContext)
 
     const handleRemove = () => {
-        setTags(tags.filter(tag => tag !== tagValue))
+        const newTagList = tags.filter(tag => tag.title !== tagValue)
+        setTags(newTagList)
+        setFieldValue("tagsString", tagList2String(newTagList), false)
+        if (tagId) {
+            const newRemovedTagList = [].concat(removedTags, [{ title: tagValue, id: tagId }])
+            setRemovedTags(newRemovedTagList)
+            setFieldValue("tagsRemoveString", tagList2String(newRemovedTagList), false)
+        }
     }
 
     return <li>
@@ -18,4 +25,8 @@ export default function TagItemInput({ tagValue }) {
             </Button>
         </div>
     </li>
+}
+
+function tagList2String(tagList) {
+    return JSON.stringify(tagList)
 }

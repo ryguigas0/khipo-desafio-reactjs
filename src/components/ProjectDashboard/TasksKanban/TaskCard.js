@@ -13,7 +13,6 @@ export default function TaskCard({ task }) {
     useEffect(() => {
         async function fetchData() {
             const resp = await taskAPI.getTask(cookies.token, task.projectId, task.id)
-            console.log(resp)
             setTaskInfo(resp)
             setLoading(false)
         }

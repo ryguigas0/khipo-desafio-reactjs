@@ -27,14 +27,16 @@ export default function TaskForm(props) {
         title: taskFormData ? taskFormData.title : "",
         description: taskFormData ? taskFormData.description : "",
         assignedMember: taskFormData ? taskFormData.assignedMemberId : -1,
-        tagsString: taskFormData ? JSON.stringify(taskFormData.tags) : "[]"
+        tagsString: taskFormData ? JSON.stringify(taskFormData.tags) : "[]",
+        tagsRemoveString: JSON.stringify("[]")
     }
 
     let schema = {
         title: yup.string().min(1).max(255).required(),
         description: yup.string().notRequired().min(1),
         assignedMember: yup.number().min(-1).required(),
-        tagsString: yup.string().notRequired()
+        tagsString: yup.string().notRequired(),
+        tagsRemoveString: yup.string().notRequired()
     }
 
     let taskSchema = yup.object(schema)
@@ -59,22 +61,15 @@ export default function TaskForm(props) {
         handleClose()
     }
 
-    const handleDelete = async (values) => {
-        console.log("DELETING TASK")
-        console.log(values)
-    }
-
-
     return <Modal show={taskFormShow} onHide={handleClose} animation={false} centered>
         <Modal.Header closeButton>
             <Modal.Title>{taskFormData ? "Editing task" : "Create new task"}</Modal.Title>
         </Modal.Header>
         <Formik
             validationSchema={taskSchema}
-            initialValues={initialValues}
-            onSubmit={handleSave}>
+            initialValues={initialValues}>
             {
-                ({ handleChange, handleSubmit, setFieldValue, values, touched, errors, status }) => <>
+                ({ handleChange, setFieldValue, values, touched, errors, status }) => <>
                     <Modal.Body>
                         <Form noValidate validated={false}>
                             <InputGroup className="pb-3">
@@ -141,12 +136,9 @@ export default function TaskForm(props) {
                         <Button variant="danger" onClick={handleClose}>
                             Cancel
                         </Button>
-                        <Button variant="primary" onClick={handleSubmit}>
+                        <Button variant="primary" onClick={() => handleSave(values)}>
                             Save
                         </Button>
-                        {taskFormData && <Button variant="danger" onClick={handleDelete}>
-                            Delete
-                        </Button>}
                     </Modal.Footer>
                 </>
             }

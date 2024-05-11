@@ -6,17 +6,20 @@ import TagInputContext from "../../../../contexts/TagInputContext"
 export default function TagListInput({ initialValue, setFieldValue }) {
     const [tags, setTags] = useState(string2TagList(initialValue))
     const [addTagValue, setaddTagValue] = useState("")
+    const [removedTags, setRemovedTags] = useState([])
 
     const appendTag = () => {
         if (addTagValue) {
-            const newTagList = uniqueItemsList([].concat(tags, [addTagValue]))
-            setTags(newTagList)
-            setFieldValue("tagsString", tagList2String(newTagList), false)
+            if (tags.findIndex(t => t.title === addTagValue) === -1) {
+                const newTagList = [].concat(tags, [{ title: addTagValue, id: undefined }])
+                setTags(newTagList)
+                setFieldValue("tagsString", tagList2String(newTagList), false)
+            }
             setaddTagValue("")
         }
     }
 
-    return <TagInputContext.Provider value={[tags, setTags]}>
+    return <TagInputContext.Provider value={[tags, setTags, removedTags, setRemovedTags]}>
         <InputGroup className="d-flex flex-column">
             <FormLabel
                 itemID="tagsString"
@@ -40,7 +43,7 @@ export default function TagListInput({ initialValue, setFieldValue }) {
                 <ul>
                     {
                         tags.map((t, i) => <TagItemInput
-                            key={i} tagValue={t.title} tagId={t.id} />)
+                            key={i} tagValue={t.title} tagId={t.id} setFieldValue={setFieldValue} />)
                     }
                 </ul>
             </div>
@@ -48,14 +51,10 @@ export default function TagListInput({ initialValue, setFieldValue }) {
     </TagInputContext.Provider>
 }
 
-function uniqueItemsList(list) {
-    return Array.from((new Set(list)).entries()).map(([k, v]) => v)
-}
-
 function string2TagList(tagString) {
     return tagString ? JSON.parse(tagString) : []
 }
 
 function tagList2String(tagList) {
-    return tagList.join(", ")
+    return JSON.stringify(tagList)
 }
