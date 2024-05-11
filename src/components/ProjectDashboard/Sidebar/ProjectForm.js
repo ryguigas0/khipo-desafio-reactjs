@@ -33,7 +33,6 @@ export default function ProjectForm() {
 
     const handleClose = () => setShowProjectForm(false)
     const handleSave = async (values) => {
-        console.log("saving")
         if (projectFormData === null) {
             const resp = await projectAPI.createProject(cookies.token, values.name, values.description)
             setProjectList([].concat(projectList, [resp]))

@@ -8,6 +8,7 @@ import ProjectListContext from '../../../contexts/ProjectListContext'
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import ProjectForm from './ProjectForm';
+import { jwtDecode } from 'jwt-decode';
 
 export default function DashboardSidebar({ username }) {
     const navigate = useNavigate()
@@ -42,9 +43,9 @@ export default function DashboardSidebar({ username }) {
                     </Button>
                 </Offcanvas.Header>
                 <Offcanvas.Header className='d-flex justify-content-between'>
-                    <div>
-                        {username}
-                    </div>
+                    <h4 className='fw-bold'>
+                        {username.toUpperCase()}
+                    </h4>
                     <Button variant='danger' onClick={handleLogout} resposive="lg">
                         <DoorOpenFill fontSize={"200%"} />
                     </Button>

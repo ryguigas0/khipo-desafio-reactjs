@@ -10,13 +10,14 @@ import MemberListContext from "../../contexts/MemberListContext";
 import TaskListContext from "../../contexts/TaskListContext";
 import { List } from "react-bootstrap-icons";
 import TaskDashboard from "./TasksKanban/TaskDashboard";
+import { jwtDecode } from "jwt-decode";
 
 
 export default function ProjectDashboard(props) {
     const navigate = useNavigate()
     const [cookies, setCookie] = useCookies(['token'])
     if (!cookies.token) navigate("/")
-    const username = "PLACEHOLDER@PLACEHOLDE.COM"
+    const { userName } = jwtDecode(cookies.token)
 
     const [showSidebar, setShowSidebar] = useState(true)
 
@@ -30,11 +31,12 @@ export default function ProjectDashboard(props) {
         <MemberListContext.Provider value={[memberList, setMemberList]}>
             <SelectedProjectContext.Provider value={[selectedProject, setSelectedProject]} >
                 <ProjectsSidebarContext.Provider value={[showSidebar, setShowSidebar]}>
-                    <DashboardSidebar username={username} />
+                    <DashboardSidebar username={userName} />
                     <Navbar className="px-2">
                         <Button variant='none' resposive="lg" onClick={() => setShowSidebar(true)}>
                             <List fontSize={"200%"} />
                         </Button>
+                        {selectedProject && <Navbar.Brand>{selectedProject.name}</Navbar.Brand>}
                     </Navbar>
                     <TaskDashboard />
                 </ProjectsSidebarContext.Provider>

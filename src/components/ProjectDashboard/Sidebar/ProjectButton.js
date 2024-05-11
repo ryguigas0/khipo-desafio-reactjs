@@ -19,23 +19,26 @@ export default function ProjectButton({ project, editButton }) {
 
     const isEditing = selectedProject && selectedProject.id === project.id && selectedProject.owner.id === userId
 
-    const handleClick = () => {
-        if (isEditing) {
-            setProjectFormData(project)
-            setShowProjectForm(true)
-        } else {
-            setSelectedProject(project)
-            setShowSidebar(false)
-            setMemberList([project.owner].concat(project.members))
-        }
+    const handleSelect = () => {
+        setSelectedProject(project)
+        setShowSidebar(false)
+        setMemberList([project.owner].concat(project.members))
     }
 
-    let classList = "d-flex flex-row justify-content-between align-items-center border border-dark border-width-1 rounded p-2 m-1"
+    const handleEdit = () => {
+        setProjectFormData(project)
+        setShowProjectForm(true)
+    }
 
-    if(isEditing) classList += " bg-primary text-light"
-
-    return <Button className={classList} variant="none" onClick={handleClick}>
+    return <div className="d-flex flex-row justify-content-between">
         <div className='fs-4'>{project.name}</div>
-        {isEditing ? <PencilSquare fontSize={"200%"} /> : <ArrowRight fontSize={"200%"} />}
-    </Button>
+        <div>
+            {isEditing && <Button variant="none" onClick={handleEdit}>
+                <PencilSquare fontSize={"200%"} />
+            </Button>}
+            <Button variant="none" onClick={handleSelect}>
+                <ArrowRight fontSize={"200%"} />
+            </Button>
+        </div>
+    </div>
 }
