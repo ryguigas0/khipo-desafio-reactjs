@@ -24,10 +24,10 @@ export default function TaskForm(props) {
     }
 
     let initialValues = {
-        title: taskFormData ? taskFormData.name : "",
+        title: taskFormData ? taskFormData.title : "",
         description: taskFormData ? taskFormData.description : "",
         assignedMember: taskFormData ? taskFormData.assignedMemberId : -1,
-        tagsString: ""
+        tagsString: taskFormData ? JSON.stringify(taskFormData.tags) : "[]"
     }
 
     let schema = {
@@ -133,7 +133,7 @@ export default function TaskForm(props) {
                                 </Form.Select>
                             </Form.Group>
                             <TagListInput
-                                values={values}
+                                initialValue={values.tagsString}
                                 setFieldValue={setFieldValue} />
                         </Form>
                     </Modal.Body>

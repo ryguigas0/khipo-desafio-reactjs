@@ -5,11 +5,5 @@ export default function TaskColumn({ tasks }) {
         {
             tasks.map((t, i) => <TaskCard task={t} key={i} />)
         }
-        {
-            tasks.map((t, i) => <TaskCard task={t} key={i} />)
-        }
-        {
-            tasks.map((t, i) => <TaskCard task={t} key={i} />)
-        }
     </div>
 }

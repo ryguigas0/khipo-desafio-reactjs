@@ -73,18 +73,19 @@ export default function TasksKanban(props) {
                 <Row>
                     <Col xs={4}>
                         <h3>Pending</h3>
-                        <TaskColumn tasks={taskList} />
+                        <TaskColumn tasks={taskList.filter(t => t.status === "pending")} />
                     </Col>
                     <Col xs={{ span: 4 }}>
                         <h3>Ongoing</h3>
-                        <TaskColumn tasks={taskList} />
+                        <TaskColumn tasks={taskList.filter(t => t.status === "ongoing")} />
                     </Col>
                     <Col xs={{ span: 4 }}>
                         <h3>Done</h3>
-                        <TaskColumn tasks={taskList} />
+                        <TaskColumn tasks={taskList.filter(t => t.status === "done")} />
                     </Col>
                 </Row>
             </Container>
+            <TaskForm />
         </TaskFormContext.Provider>
     </TaskListContext.Provider>
 }

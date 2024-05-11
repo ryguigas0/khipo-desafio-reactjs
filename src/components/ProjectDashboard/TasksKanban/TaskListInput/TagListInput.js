@@ -4,7 +4,7 @@ import TagItemInput from "./TagItemInput";
 import TagInputContext from "../../../../contexts/TagInputContext"
 
 export default function TagListInput({ initialValue, setFieldValue }) {
-    const [tags, setTags] = useState(initialValue ? string2TagList(initialValue) : [])
+    const [tags, setTags] = useState(string2TagList(initialValue))
     const [addTagValue, setaddTagValue] = useState("")
 
     const appendTag = () => {
@@ -40,7 +40,7 @@ export default function TagListInput({ initialValue, setFieldValue }) {
                 <ul>
                     {
                         tags.map((t, i) => <TagItemInput
-                            key={i} tagValue={t} />)
+                            key={i} tagValue={t.title} tagId={t.id} />)
                     }
                 </ul>
             </div>
@@ -53,7 +53,7 @@ function uniqueItemsList(list) {
 }
 
 function string2TagList(tagString) {
-    return tagString ? tagString.trim().split(",") : []
+    return tagString ? JSON.parse(tagString) : []
 }
 
 function tagList2String(tagList) {
