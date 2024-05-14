@@ -1,31 +1,24 @@
 import { useContext, useEffect, useState } from "react";
 import { Badge, Button, Card, Spinner } from "react-bootstrap";
-import * as taskAPI from "../../../api/tasks"
 import { useCookies } from "react-cookie";
 import TaskFormContext from "../../../contexts/TaskFormContext"
+import TaskListContext from "../../../contexts/TaskListContext"
+import * as taskAPI from "../../../api/tasks"
 
-export default function TaskCard({ task }) {
+export default function TaskCard({ task, loading }) {
     const [cookies, setCookies] = useCookies(['token'])
-    const [taskInfo, setTaskInfo] = useState(task)
-    const [loading, setLoading] = useState(true)
     const [taskFormShow, setTaskFormShow, taskFormData, setTaskFormData] = useContext(TaskFormContext)
-
-    useEffect(() => {
-        async function fetchData() {
-            const resp = await taskAPI.getTask(cookies.token, task.projectId, task.id)
-            setTaskInfo(resp)
-            setLoading(false)
-        }
-        fetchData()
-    }, [])
+    const [taskList, setTaskList] = useContext(TaskListContext)
 
     const handleEdit = () => {
         setTaskFormShow(true)
-        setTaskFormData(taskInfo)
+        setTaskFormData(task)
     }
 
-    const handleDelete = () => {
-
+    const handleDelete = async () => {
+        console.log('DELETING TASK')
+        await taskAPI.deleteTask(cookies.token, task.id, task.projectId)
+        setTaskList(taskList.filter(t => t.id != task.id))
     }
 
     if (loading) return <Card className="placeholder-glow">
@@ -51,22 +44,22 @@ export default function TaskCard({ task }) {
 
     return <Card>
         <Card.Body>
-            <Card.Title>{taskInfo.title}</Card.Title>
-            <Card.Subtitle>Assigned to {taskInfo.assignedMember ? taskInfo.assignedMember : "none"}</Card.Subtitle>
+            <Card.Title>{task.title}</Card.Title>
+            <Card.Subtitle>Assigned to {task.assignedMember ? task.assignedMember.name : "none"}</Card.Subtitle>
             <Card.Text style={{ minHeight: "72px" }}>
-                {taskInfo.description}
+                {task.description}
             </Card.Text>
         </Card.Body>
         <Card.Footer>
-            <Card.Subtitle className="pt-1">{(new Date(taskInfo.createdAt)).toLocaleDateString()} {(new Date(taskInfo.createdAt)).toLocaleTimeString()}</Card.Subtitle>
+            <Card.Subtitle className="pt-1">{(new Date(task.createdAt)).toLocaleDateString()} {(new Date(task.createdAt)).toLocaleTimeString()}</Card.Subtitle>
         </Card.Footer>
         <Card.Footer>
             <Card.Subtitle className="pt-1 d-flex flex-row flex-wrap gap-1">
-                {taskInfo.tags.map((t) => <Badge pill bg="primary" key={t.id}>{t.title}</Badge>)}
+                {task.tags.map((t) => <Badge pill bg="primary" key={t.id}>{t.title}</Badge>)}
             </Card.Subtitle>
         </Card.Footer>
         <Card.Footer className="d-flex flex-row justify-content-evenly">
-            <Button onClick={handleEdit}>Edit</Button>
+            {task.status !== "done" && <Button onClick={handleEdit}>Edit</Button>}
             <Button variant="danger" onClick={handleDelete}>Delete</Button>
         </Card.Footer>
     </Card>

@@ -28,7 +28,8 @@ export default function TaskForm(props) {
         description: taskFormData ? taskFormData.description : "",
         assignedMember: taskFormData ? taskFormData.assignedMemberId : -1,
         tagsString: taskFormData ? JSON.stringify(taskFormData.tags) : "[]",
-        tagsRemoveString: JSON.stringify("[]")
+        tagsRemoveString: JSON.stringify("[]"),
+        status: taskFormData ? taskFormData.status : "pending"
     }
 
     let schema = {
@@ -36,25 +37,45 @@ export default function TaskForm(props) {
         description: yup.string().notRequired().min(1),
         assignedMember: yup.number().min(-1).required(),
         tagsString: yup.string().notRequired(),
-        tagsRemoveString: yup.string().notRequired()
+        tagsRemoveString: yup.string().notRequired(),
+        status: yup.string().notRequired()
     }
 
     let taskSchema = yup.object(schema)
 
     const handleSave = async (values) => {
         if (taskFormData) {
-            console.log("EDITING TASK")
-            console.log(values)
+            const resp = await taskAPI.updateTask(
+                cookies.token,
+                taskFormData.id,
+                selectedProject.id,
+                values.title,
+                values.description,
+                values.assignedMember === -1 ? null : values.assignedMember,
+                values.taskStatus
+            )
+
+            const newTaskList = Array.from(taskList).map(t => {
+                if (t.id === taskFormData.id) {
+                    return resp
+                }
+                return t
+            })
+
+            setTaskList(newTaskList)
         } else {
+            const newTags = JSON.parse(values.tagsString).map(t => t.title)
+
             const resp = await taskAPI.createTask(
                 cookies.token,
                 selectedProject.id,
                 values.title,
                 values.description,
-                values.tagsString.split(', '),
+                newTags,
                 values.assignedMember === -1 ? null : values.assignedMember
             )
 
+            console.log({ resp })
             const newTaskList = [].concat(taskList, [resp])
             setTaskList(newTaskList)
         }
@@ -112,11 +133,23 @@ export default function TaskForm(props) {
                                     Invalid task descirption
                                 </div>}
                             </InputGroup>
+                            {
+                                taskFormData && <Form.Group className="pb-3">
+                                    <FormLabel htmlFor="taskStatus">
+                                        Current task status
+                                    </FormLabel>
+                                    <formik.Field className="form-select" as="select" name="taskStatus" id="taskStatus" aria-label="Select current task status">
+                                        <option value="pending">Pending</option>
+                                        <option value="ongoing">Ongoing</option>
+                                        <option value="done">Done</option>
+                                    </formik.Field>
+                                </Form.Group>
+                            }
                             <Form.Group className="pb-3">
                                 <FormLabel htmlFor="assignedMember">
                                     Member assigned to task
                                 </FormLabel>
-                                <Form.Select id="assignedMember" aria-label="Select assigned member task">
+                                <formik.Field className="form-select" as="select" name="assignedMember" id="assignedMember" aria-label="Select assigned member for task">
                                     <option value={-1}>None</option>
                                     {
                                         memberList.map(m =>
@@ -125,7 +158,7 @@ export default function TaskForm(props) {
                                             </option>
                                         )
                                     }
-                                </Form.Select>
+                                </formik.Field>
                             </Form.Group>
                             <TagListInput
                                 initialValue={values.tagsString}

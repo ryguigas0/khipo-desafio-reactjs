@@ -1,9 +1,8 @@
 import { useCookies } from "react-cookie"
 import { useNavigate } from "react-router-dom";
 import DashboardSidebar from "./Sidebar/DashboardSidebar";
-import TasksKanban from "./TasksKanban/TasksKanban";
 import { Button, Col, Container, Navbar, Row } from "react-bootstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProjectsSidebarContext from "../../contexts/ProjectsSidebarContext";
 import SelectedProjectContext from "../../contexts/SelectedProjectContext";
 import MemberListContext from "../../contexts/MemberListContext";
@@ -11,7 +10,6 @@ import TaskListContext from "../../contexts/TaskListContext";
 import { List } from "react-bootstrap-icons";
 import TaskDashboard from "./TasksKanban/TaskDashboard";
 import { jwtDecode } from "jwt-decode";
-
 
 export default function ProjectDashboard(props) {
     const navigate = useNavigate()

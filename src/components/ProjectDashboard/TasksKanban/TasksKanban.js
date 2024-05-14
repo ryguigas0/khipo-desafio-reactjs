@@ -23,7 +23,12 @@ export default function TasksKanban(props) {
         async function fetchData() {
             if (selectedProject) {
                 const projectData = await projectAPI.getProject(cookies.token, selectedProject.id)
-                setTaskList(projectData.tasks)
+                let taskAcc = []
+                for (let i = 0; i < projectData.tasks.length; i++) {
+                    const task = projectData.tasks[i];
+                    taskAcc.push(await taskAPI.getTask(cookies.token, task.projectId, task.id))
+                }
+                setTaskList(taskAcc)
             }
             setLoading(false)
         }
@@ -66,22 +71,29 @@ export default function TasksKanban(props) {
         </TaskFormContext.Provider>
     </TaskListContext.Provider>
 
-
     return <TaskListContext.Provider value={[taskList, setTaskList]}>
         <TaskFormContext.Provider value={[showTaskForm, setTaskFormShow, taskFormData, setTaskFormData]}>
             <Container style={{ width: "200%" }}>
                 <Row>
+                    <div className="d-flex flex-row justify-content-evenly align-items-center border border-dark border-width-1 rounded p-2 m-1 gap-2">
+                        <Button variant="none" onClick={handleCreateTask}>
+                            <Plus fontSize={"200%"} />
+                            <div className='fs-4'>Create task</div>
+                        </Button>
+                    </div>
+                </Row>
+                <Row>
                     <Col xs={4}>
                         <h3>Pending</h3>
-                        <TaskColumn tasks={taskList.filter(t => t.status === "pending")} />
+                        <TaskColumn loading={loading} tasks={taskList.filter(t => t.status === "pending")} />
                     </Col>
                     <Col xs={{ span: 4 }}>
                         <h3>Ongoing</h3>
-                        <TaskColumn tasks={taskList.filter(t => t.status === "ongoing")} />
+                        <TaskColumn loading={loading} tasks={taskList.filter(t => t.status === "ongoing")} />
                     </Col>
                     <Col xs={{ span: 4 }}>
                         <h3>Done</h3>
-                        <TaskColumn tasks={taskList.filter(t => t.status === "done")} />
+                        <TaskColumn loading={loading} tasks={taskList.filter(t => t.status === "done")} />
                     </Col>
                 </Row>
             </Container>

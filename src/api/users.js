@@ -21,7 +21,7 @@ export async function createUser(name, email, password) {
 
         return resp.data
     } catch (error) {
-        console.log(error)
+        console.error(error)
         return error.response.data
     }
 }
@@ -36,7 +36,7 @@ export async function changePassword(email, oldPassword, newPassword) {
 
         return resp.data
     } catch (error) {
-        console.log(error)
+        console.error(error)
         return error.response.data
     }
 }
@@ -50,7 +50,7 @@ export async function loginUser(email, password) {
 
         return resp.data
     } catch (error) {
-        console.log(error)
+        console.error(error)
         return error.response.data
     }
 }
