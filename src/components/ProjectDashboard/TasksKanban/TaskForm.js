@@ -7,6 +7,7 @@ import TaskFormContext from "../../../contexts/TaskFormContext"
 import MemberListContext from "../../../contexts/MemberListContext"
 import TagListInput from "./TaskListInput/TagListInput"
 import * as taskAPI from "../../../api/tasks"
+import * as tagsAPI from "../../../api/tags"
 import SelectedProjectContext from "../../../contexts/SelectedProjectContext"
 import TaskListContext from "../../../contexts/TaskListContext"
 
@@ -45,6 +46,24 @@ export default function TaskForm(props) {
 
     const handleSave = async (values) => {
         if (taskFormData) {
+            const removedTags = JSON.parse(values.tagsRemoveString)
+
+            const newTags = JSON.parse(values.tagsString)
+                .map(t => t.title)
+                .filter(t => taskFormData.tags.findIndex(prevTag => prevTag.title === t) === -1)
+
+            console.log({ newTags, removedTags })
+
+            for (let i = 0; i < removedTags.length; i++) {
+                const removedTag = removedTags[i];
+                await tagsAPI.deleteTag(cookies.token, removedTag.id, taskFormData.id, selectedProject.id)
+            }
+
+            for (let i = 0; i < newTags.length; i++) {
+                const newTag = newTags[i];
+                await tagsAPI.createTag(cookies.token, newTag, taskFormData.id, selectedProject.id)
+            }
+
             const resp = await taskAPI.updateTask(
                 cookies.token,
                 taskFormData.id,
