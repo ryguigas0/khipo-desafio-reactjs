@@ -36,7 +36,7 @@ export default function ProjectList(props) {
 
     return <div className="d-flex flex-column justify-content-start gap-2 overflow-auto">
         {
-            projectList.map(p => <ProjectButton key={p.id} project={p} editButton />)
+            projectList.map(p => <ProjectButton key={p.id} project={p} />)
         }
     </div>
 

@@ -52,8 +52,6 @@ export default function TaskForm(props) {
                 .map(t => t.title)
                 .filter(t => taskFormData.tags.findIndex(prevTag => prevTag.title === t) === -1)
 
-            console.log({ newTags, removedTags })
-
             for (let i = 0; i < removedTags.length; i++) {
                 const removedTag = removedTags[i];
                 await tagsAPI.deleteTag(cookies.token, removedTag.id, taskFormData.id, selectedProject.id)
@@ -94,7 +92,6 @@ export default function TaskForm(props) {
                 values.assignedMember === -1 ? null : values.assignedMember
             )
 
-            console.log({ resp })
             const newTaskList = [].concat(taskList, [resp])
             setTaskList(newTaskList)
         }

@@ -17,7 +17,7 @@ export default function ProjectButton({ project, editButton }) {
 
     const { userId } = jwtDecode(cookies.token)
 
-    const isEditing = selectedProject && selectedProject.id === project.id && selectedProject.owner.id === userId
+    const isEditing = editButton && selectedProject && selectedProject.id === project.id && selectedProject.owner.id === userId
 
     const handleSelect = () => {
         setSelectedProject(project)
