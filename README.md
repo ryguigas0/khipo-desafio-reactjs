@@ -4,7 +4,13 @@
 
 # Desafio Frontend | ReactJS
 
-Olá, candidato! Estamos felizes em tê-lo aqui. Este desafio foi criado para avaliar suas habilidades como desenvolvedor frontend.
+## 💻 Como rodar o projeto
+
+1. Siga os passos para a rodar do [backend](https://github.com/ryguigas0/khipo-desafio-nodejs)
+2. Clone esse projeto
+3. `cd khipo-desafio-nodejs`
+4. `npm run start`
+5. Acesse `http://localhost:3000`
 
 ## 🚀 Objetivo:
 
