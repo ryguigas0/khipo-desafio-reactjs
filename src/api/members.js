@@ -16,3 +16,17 @@ export async function addMember(token, projectId, memberEmail) {
         return error.response.data
     }
 }
+
+export async function removeMember(token, projectId, memberEmail) {
+    try {
+        const resp = await axios.delete(
+            "/projects/" + projectId + "/members/",
+            { memberEmail: memberEmail },
+            axiosConfig(token))
+
+        return resp.data
+    } catch (error) {
+        console.error(error)
+        return error.response.data
+    }
+}

@@ -7,12 +7,14 @@ import * as yup from 'yup'
 import * as memberAPI from '../../../api/members'
 import { useCookies } from "react-cookie"
 import MemberListContext from "../../../contexts/MemberListContext"
+import { jwtDecode } from "jwt-decode"
 
 export default function MemberListForm({ project, owner, members }) {
     const [showMemberListForm, setShowMemberListForm] = useContext(MemberListFormContext)
     const [memberList, setMemberList] = useContext(MemberListContext)
     const [cookies, setCookie] = useCookies(['token'])
-
+    const { userId } = jwtDecode(cookies.token)
+    
     const handleClose = () => {
         setShowMemberListForm(false)
     }
@@ -25,6 +27,7 @@ export default function MemberListForm({ project, owner, members }) {
         if (!resp.error) {
             setMemberList([].concat(memberList, [resp]))
             resetForm()
+            return
         }
 
         setStatus({
@@ -63,16 +66,18 @@ export default function MemberListForm({ project, owner, members }) {
                         <h5>Other members</h5>
                         <InputGroup className="d-flex flex-column">
                             <div>
-                                <div className="d-flex">
-                                    <Form.Control
-                                        name="addMember"
-                                        placeholder="New member email"
-                                        value={values.addMember}
-                                        onChange={handleChange}
-                                        isValid={touched.addMember && !errors.addMember}
-                                    />
-                                    <Button variant='primary' type="submit">Add</Button>
-                                </div>
+                                {userId === owner.id && <>
+                                    <div className="d-flex">
+                                        <Form.Control
+                                            name="addMember"
+                                            placeholder="New member email"
+                                            value={values.addMember}
+                                            onChange={handleChange}
+                                            isValid={touched.addMember && !errors.addMember}
+                                        />
+                                        <Button variant='primary' type="submit">Add</Button>
+                                    </div>
+                                </>}
                                 {errors.addMember && touched.addMember ? (
                                     <div>{errors.addMember}</div>
                                 ) : null}
